@@ -81,7 +81,15 @@ public class PostDataService {
         savePokemon.setType(types);
         savePokemon.setStats(stats);
         savePokemon.setMoves(moves);
-        savePokemon.setImage(pokemon.getSprites().getOther().getDream_world().getFront_default());
+        if (pokemon.getSprites().getOther().getDream_world().getFront_default() != null) {
+            savePokemon.setImage(pokemon.getSprites().getOther().getDream_world().getFront_default());
+        } else if (pokemon.getSprites().getOther().getHome().getFront_default() != null) {
+            savePokemon.setImage(pokemon.getSprites().getOther().getHome().getFront_default());
+        } else if (pokemon.getSprites().getOther().getOfficialArtwork().getFront_default() != null) {
+            savePokemon.setImage(pokemon.getSprites().getOther().getOfficialArtwork().getFront_default());
+        } else {
+            return;
+        }
         pokemonRepository.save(savePokemon);
     }
 
