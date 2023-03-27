@@ -1,4 +1,4 @@
-package api.pokedex.response;
+package api.pokedex.response.pokemon;
 
 import api.pokedex.model.pokemon.Stats;
 import lombok.AllArgsConstructor;

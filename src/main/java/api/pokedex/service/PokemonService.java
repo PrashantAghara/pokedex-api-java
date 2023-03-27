@@ -1,46 +1,46 @@
 package api.pokedex.service;
 
 import api.pokedex.model.pokemon.Pokemon;
-import api.pokedex.repository.PokemonRepository;
-import api.pokedex.response.PokemonResponseCompact;
+import api.pokedex.repository.custom.PokemonCustomRepository;
+import api.pokedex.response.PokemonResponse;
+import api.pokedex.response.pokemon.PokemonResponseCompact;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class PokemonService {
 
-    private final PokemonRepository pokemonRepository;
+    private final PokemonCustomRepository pokemonCustomRepository;
+    private final Logger logger = LoggerFactory.getLogger(PokemonService.class);
 
     @Autowired
-    public PokemonService(PokemonRepository pokemonRepository) {
-        this.pokemonRepository = pokemonRepository;
+    public PokemonService(PokemonCustomRepository pokemonCustomRepository) {
+        this.pokemonCustomRepository = pokemonCustomRepository;
     }
 
 
-    public List<PokemonResponseCompact> getPokemonBasedOnTypeAndName(String name, String type, Long limit, Long offset) {
-        List<Pokemon> pokemons = null;
-        if (name == null && type == null) {
-            pokemons = pokemonRepository.getAllPokemon(limit, offset);
-        } else if (type == null) {
-            pokemons = pokemonRepository.getPokemonByName("^" + name, limit, offset);
-        } else if (name == null) {
-            List<String> types = Arrays.asList(type.split(","));
-            pokemons = pokemonRepository.getPokemonByType(types, limit, offset);
-        } else {
-            List<String> types = Arrays.asList(type.split(","));
-            pokemons = pokemonRepository.getPokemonByNameAndType("^" + name, types, limit, offset);
+    public PokemonResponse getPokemonBasedOnTypeAndName(String name, String type, Integer limit, Long offset) {
+        logger.info("Fetching Pokemon Details by below Filters & Paginations");
+        if (limit == null) {
+            limit = 20;
         }
+        if (offset == null) {
+            offset = 0L;
+        }
+        logger.info("Name : " + name + " | Type :" + type);
+        logger.info("Limit : " + limit + " | Skip : " + offset);
+        List<Pokemon> pokemons = pokemonCustomRepository.getPokemonByNameAndType(name, type, limit, offset);
         List<PokemonResponseCompact> pokemonResponseCompacts = new ArrayList<>();
-        if (pokemons == null || pokemons.isEmpty()) {
-            return pokemonResponseCompacts;
-        }
         for (Pokemon pokemon : pokemons) {
             pokemonResponseCompacts.add(new PokemonResponseCompact(pokemon.getId(), pokemon.getName(), pokemon.getImage(), pokemon.getType(), pokemon.getStats()));
         }
-        return pokemonResponseCompacts;
+        PokemonResponse pokemonResponse = new PokemonResponse(pokemonResponseCompacts.size(), offset, pokemonResponseCompacts);
+        logger.info("SUCCESS RESPONSE");
+        return pokemonResponse;
     }
 }

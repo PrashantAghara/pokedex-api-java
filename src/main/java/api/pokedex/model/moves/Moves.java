@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
-@Document(collation = "move")
+@Document(collection = "move")
 public class Moves {
     @Id
     private Integer id;
