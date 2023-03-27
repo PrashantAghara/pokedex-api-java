@@ -2,5 +2,4 @@ spring:
   data:
     mongodb:
       database: pokemon_db
-      port: 27017
-      host: localhost
+      uri: mongodb+srv://pokedexapi:NzBN199ztexngnRp@cluster0.eobih.mongodb.net/?retryWrites=true&w=majority
