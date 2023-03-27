@@ -1,5 +1,0 @@
-spring:
-  data:
-    mongodb:
-      database: pokemon_db
-      uri: mongodb+srv://pokedexapi:NzBN199ztexngnRp@cluster0.eobih.mongodb.net/?retryWrites=true&w=majority
