@@ -1,6 +1,8 @@
 package api.pokedex.response;
 
 import api.pokedex.response.pokemon.PokemonResponseCompact;
+import api.pokedex.response.pokemon.PokemonResponseDTO;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +14,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PokemonResponse {
-    private int size;
+    private Integer size;
     private Long offset;
     private List<PokemonResponseCompact> pokemons;
+    private PokemonResponseDTO pokemon;
 }
