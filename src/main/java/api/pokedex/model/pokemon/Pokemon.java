@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Document(collation = "pokemon")
+@Document(collection = "pokemon")
 public class Pokemon {
     @Id
     private Integer id;
