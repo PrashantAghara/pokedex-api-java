@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pokedex/")
+@CrossOrigin(origins = "*")
 public class PokemonController {
     private final PokemonService pokemonService;
 
@@ -18,8 +19,11 @@ public class PokemonController {
     }
 
     @GetMapping("/pokemons")
-    public ResponseEntity<PokemonResponse> getPokemon(@RequestParam(value = "size", required = false) Integer size, @RequestParam(value = "offset", required = false) Long offset, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "name", required = false) String name) {
-        PokemonResponse pokemonResponse = pokemonService.getPokemonBasedOnTypeAndName(name, type, size, offset);
+    public ResponseEntity<PokemonResponse> getPokemon(@RequestParam(value = "size", required = false, defaultValue = "20") Integer size, @RequestParam(value = "offset", required = false, defaultValue = "0") Long offset, @RequestParam(value = "type", required = false) String type,
+                                                      @RequestParam(value = "name", required = false) String name, @RequestParam(value = "attack", required = false) String attack, @RequestParam(value = "defense", required = false) String defense,
+                                                      @RequestParam(value = "speed", required = false) String speed, @RequestParam(required = false, name = "sort", defaultValue = "ASC") String sort
+    ) {
+        PokemonResponse pokemonResponse = pokemonService.getPokemonBasedOnTypeAndName(name, type, size, offset, attack, speed, defense, sort);
         return new ResponseEntity<>(pokemonResponse, HttpStatus.OK);
     }
 

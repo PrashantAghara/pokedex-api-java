@@ -28,17 +28,11 @@ public class PokemonService {
     }
 
 
-    public PokemonResponse getPokemonBasedOnTypeAndName(String name, String type, Integer limit, Long offset) {
-        logger.info("Fetching Pokemon Details by below Filters & Paginations");
-        if (limit == null) {
-            limit = 20;
-        }
-        if (offset == null) {
-            offset = 0L;
-        }
+    public PokemonResponse getPokemonBasedOnTypeAndName(String name, String type, Integer limit, Long offset, String attack, String speed, String defense, String sort) {
+        logger.info("Fetching Pokemon Details by below Filters & Pagination");
         logger.info("Name : " + name + " | Type :" + type);
         logger.info("Limit : " + limit + " | Skip : " + offset);
-        List<Pokemon> pokemons = pokemonCustomRepository.getPokemonByNameAndType(name, type, limit, offset);
+        List<Pokemon> pokemons = pokemonCustomRepository.getPokemonByNameAndType(name, type, limit, offset, attack, defense, speed, sort);
         List<PokemonResponseCompact> pokemonResponseCompacts = new ArrayList<>();
         for (Pokemon pokemon : pokemons) {
             pokemonResponseCompacts.add(new PokemonResponseCompact(pokemon.getId(), pokemon.getName(), pokemon.getImage(), pokemon.getType(), pokemon.getStats()));
