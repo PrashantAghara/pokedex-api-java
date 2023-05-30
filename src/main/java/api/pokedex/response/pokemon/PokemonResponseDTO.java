@@ -25,5 +25,4 @@ public class PokemonResponseDTO {
     private Stats stats;
     private List<Type> type;
     private List<Ability> abilities;
-    private List<Moves> moves;
 }
