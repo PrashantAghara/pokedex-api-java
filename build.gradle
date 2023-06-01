@@ -32,9 +32,7 @@ dependencies {
 
 task fatJar(type: Jar) {
 	manifest {
-        attributes {
-        	'Main-Class': 'api.pokedex.PokedexAPIMain'
-            }
+        attributes 'Main-Class': 'api.pokedex.PokedexAPIMain'        
     }
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
