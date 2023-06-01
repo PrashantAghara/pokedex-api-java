@@ -5,6 +5,6 @@ RUN gradle clean build
 
 FROM openjdk:11-jdk-slim
 USER root
-COPY --from=build /build/libs/*.jar pokedex.jar
+COPY --from=gradleimage /build/libs/*.jar pokedex.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","demo.jar"]
