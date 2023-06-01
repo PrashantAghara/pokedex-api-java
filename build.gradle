@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.pokedex'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 sourceCompatibility = 11
 targetCompatibility = 11
 
@@ -31,18 +31,12 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
 }
 
+jar {
+    enabled = false
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
 
-jar {
-  manifest {
-    attributes 'Main-Class': 'api.pokedex.PokedexAPIMain'
-  }
-  from {
-    configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-  }
-  
-  duplicatesStrategy = 'exclude'
-}
 
