@@ -36,10 +36,10 @@ tasks.named('test') {
 
 jar {
   manifest {
-    attributes(
-      'Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' '),
-      'Main-Class': 'api.pokedex.PokedexAPIMain'
-    )
+    attributes 'Main-Class': 'api.pokedex.PokedexAPIMain'
+  }
+  from {
+    configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
   }
 }
 
