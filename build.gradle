@@ -31,10 +31,6 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
 }
 
-jar {
-    enabled = false
-}
-
 tasks.named('test') {
     useJUnitPlatform()
 }
