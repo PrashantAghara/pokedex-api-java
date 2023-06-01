@@ -30,13 +30,23 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
 }
 
-task fatJar(type: Jar) {
-	manifest {
-        attributes 'Main-Class': 'api.pokedex.PokedexAPIMain'        
+jar {
+    dependsOn resolve
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes(
+                'Main-Class': 'api.pokedex.PokedexAPIMain'
+        )
     }
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    zip64 true
+    exclude 'META-INF/*.RSA'
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
 }
 
 tasks.named('test') {
