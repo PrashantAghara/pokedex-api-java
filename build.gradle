@@ -30,9 +30,13 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
 }
 
-bootJar {
-     mainClassName = 'api.pokedex.PokedexAPIMain'
-}
+jar {  
+    manifest {  
+        attributes(  
+            'Main-Class': 'api.pokedex.PokedexAPIMain'  
+        )  
+    }  
+}  
 
 tasks.named('test') {
     useJUnitPlatform()
