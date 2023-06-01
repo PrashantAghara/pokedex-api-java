@@ -8,4 +8,4 @@ FROM openjdk:11-jdk-slim
 USER root
 COPY --from=gradleimage /home/gradle/source/build/libs/*.jar pokedex.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","demo.jar"]
+ENTRYPOINT ["java","-jar","pokedex.jar"]
