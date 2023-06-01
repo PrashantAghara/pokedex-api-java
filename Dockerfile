@@ -1,11 +1,10 @@
-FROM ubuntu:latest AS build
+FROM gradle:jdk11 as gradleimage
 USER root
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
 COPY . .
-RUN chmod +x gradlew
-RUN ./gradlew bootJar --no-daemon
-FROM openjdk:17-jdk-slim
+RUN gradle clean build
+
+FROM openjdk:11-jdk-slim
+USER root
+COPY --from=build /build/libs/*.jar pokedex.jar
 EXPOSE 8080
-COPY --from=build /build/libs/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","demo.jar"]
