@@ -30,26 +30,8 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
 }
 
-jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-    manifest {
-        attributes(
-                'Main-Class': 'api.pokedex.PokedexAPIMain'
-        )
-    }
-
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    zip64 true
-    exclude 'META-INF/*.RSA'
-    exclude 'META-INF/*.SF'
-    exclude 'META-INF/*.DSA'
-}
-
 bootJar {
-    enabled = false
+     mainClassName = 'api.pokedex.PokedexAPIMain'
 }
 
 tasks.named('test') {
