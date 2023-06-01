@@ -43,6 +43,5 @@ jar {
   }
   
   duplicatesStrategy = 'exclude'
-  duplicatesStrategy.exclude '**/META-INF/LICENSE.txt'
 }
 
