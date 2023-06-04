@@ -38,8 +38,8 @@ public class AddPokemons {
         for (Results result : countMapper.getResults()) {
             Pokemon pokemon = getPokemon.get().uri(result.getUrl()).retrieve().bodyToMono(Pokemon.class).block();
             //DB
-            System.out.println("DB Saved");
             assert pokemon != null;
+            System.out.println("DB Saved : " + pokemon.getId());
             postDataService.savePokemon(pokemon);
         }
         return countMapper.getCount();

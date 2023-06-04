@@ -43,20 +43,22 @@ public class PostDataService {
             savePokemon.setGeneration("One");
         } else if (pokemon.getId() > 151 && pokemon.getId() <= 251) {
             savePokemon.setGeneration("Two");
-        } else if (pokemon.getId() > 251 && pokemon.getId() <= 386) {
+        } else if ((pokemon.getId() > 251 && pokemon.getId() <= 386)) {
             savePokemon.setGeneration("Three");
-        } else if (pokemon.getId() > 386 && pokemon.getId() <= 493) {
+        } else if ((pokemon.getId() > 386 && pokemon.getId() <= 493)) {
             savePokemon.setGeneration("Four");
-        } else if (pokemon.getId() > 493 && pokemon.getId() <= 649) {
+        } else if ((pokemon.getId() > 493 && pokemon.getId() <= 649)) {
             savePokemon.setGeneration("Five");
         } else if (pokemon.getId() > 649 && pokemon.getId() <= 721) {
             savePokemon.setGeneration("Six");
         } else if (pokemon.getId() > 721 && pokemon.getId() <= 809) {
             savePokemon.setGeneration("Seven");
-        } else if (pokemon.getId() > 809 && pokemon.getId() <= 898) {
+        } else if (pokemon.getId() > 809 && pokemon.getId() <= 905) {
             savePokemon.setGeneration("Eight");
+        } else if (pokemon.getId() > 905 && pokemon.getId() <= 1010) {
+            savePokemon.setGeneration("Nine");
         } else {
-            savePokemon.setGeneration("None");
+            savePokemon.setGeneration("Other Forms of Pokemons");
         }
         savePokemon.setId(pokemon.getId());
         savePokemon.setName(pokemon.getName());
