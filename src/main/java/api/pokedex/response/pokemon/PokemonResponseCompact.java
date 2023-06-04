@@ -17,5 +17,5 @@ public class PokemonResponseCompact {
     private String name;
     private String image;
     private List<String> type;
-    private Stats stats;
+    private String generation;
 }

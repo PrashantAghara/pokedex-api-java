@@ -28,7 +28,7 @@ public class PokemonCustomRepositoryImpl implements PokemonCustomRepository {
     }
 
     @Override
-    public List<Pokemon> getPokemonByNameAndType(String name, String types, int limit, Long skip, String attack, String defense, String speed, String sort) {
+    public List<Pokemon> getPokemonByNameAndType(String name, String types, int limit, Long skip, String generation, String sort) {
         List<Criteria> criteriaList = new ArrayList<>();
         if (name != null) {
             Criteria criteria = Criteria.where("name").regex(Pattern.compile("^" + name, Pattern.CASE_INSENSITIVE));
@@ -39,14 +39,9 @@ public class PokemonCustomRepositoryImpl implements PokemonCustomRepository {
             Criteria criteria = Criteria.where("type").all(type);
             criteriaList.add(criteria);
         }
-        if (speed != null) {
-            this.addRangeCriteriaToList(criteriaList, "stats.speed", speed);
-        }
-        if (attack != null) {
-            this.addRangeCriteriaToList(criteriaList, "stats.attack", attack);
-        }
-        if (defense != null) {
-            this.addRangeCriteriaToList(criteriaList, "stats.defense", defense);
+        if (generation != null) {
+            Criteria criteria = Criteria.where("generation").is(generation);
+            criteriaList.add(criteria);
         }
         Criteria queryCriteria;
         if (!criteriaList.isEmpty()) {
@@ -64,11 +59,5 @@ public class PokemonCustomRepositoryImpl implements PokemonCustomRepository {
         }
         logger.info("QUERY : " + query);
         return mongoTemplate.find(query, Pokemon.class);
-    }
-
-    private void addRangeCriteriaToList(List<Criteria> criteriaList, String name, String value) {
-        List<String> stats = Arrays.asList(value.split(","));
-        Criteria criteriaOne = Criteria.where(name).gt(Integer.parseInt(stats.get(0))).lt(Integer.parseInt(stats.get(1)));
-        criteriaList.add(criteriaOne);
     }
 }

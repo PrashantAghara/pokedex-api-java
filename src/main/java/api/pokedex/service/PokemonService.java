@@ -28,14 +28,14 @@ public class PokemonService {
     }
 
 
-    public PokemonResponse getPokemonBasedOnTypeAndName(String name, String type, Integer limit, Long offset, String attack, String speed, String defense, String sort) {
+    public PokemonResponse getPokemonBasedOnTypeAndName(String name, String type, Integer limit, Long offset, String generation, String sort) {
         logger.info("Fetching Pokemon Details by below Filters & Pagination");
         logger.info("Name : " + name + " | Type :" + type);
         logger.info("Limit : " + limit + " | Skip : " + offset);
-        List<Pokemon> pokemons = pokemonCustomRepository.getPokemonByNameAndType(name, type, limit, offset, attack, defense, speed, sort);
+        List<Pokemon> pokemons = pokemonCustomRepository.getPokemonByNameAndType(name, type, limit, offset, generation, sort);
         List<PokemonResponseCompact> pokemonResponseCompacts = new ArrayList<>();
         for (Pokemon pokemon : pokemons) {
-            pokemonResponseCompacts.add(new PokemonResponseCompact(pokemon.getId(), pokemon.getName(), pokemon.getImage(), pokemon.getType(), pokemon.getStats()));
+            pokemonResponseCompacts.add(new PokemonResponseCompact(pokemon.getId(), pokemon.getName(), pokemon.getImage(), pokemon.getType(), pokemon.getGeneration()));
         }
         PokemonResponse pokemonResponse = new PokemonResponse(pokemonResponseCompacts.size(), offset, pokemonResponseCompacts, null);
         logger.info("SUCCESS RESPONSE");
