@@ -20,10 +20,9 @@ public class PokemonController {
 
     @GetMapping("/pokemons")
     public ResponseEntity<PokemonResponse> getPokemon(@RequestParam(value = "size", required = false, defaultValue = "20") Integer size, @RequestParam(value = "offset", required = false, defaultValue = "0") Long offset, @RequestParam(value = "type", required = false) String type,
-                                                      @RequestParam(value = "name", required = false) String name, @RequestParam(value = "attack", required = false) String attack, @RequestParam(value = "defense", required = false) String defense,
-                                                      @RequestParam(value = "speed", required = false) String speed, @RequestParam(required = false, name = "sort", defaultValue = "ASC") String sort
+                                                      @RequestParam(value = "name", required = false) String name, @RequestParam(value = "generation", required = false) String generation, @RequestParam(required = false, name = "sort", defaultValue = "ASC") String sort
     ) {
-        PokemonResponse pokemonResponse = pokemonService.getPokemonBasedOnTypeAndName(name, type, size, offset, attack, speed, defense, sort);
+        PokemonResponse pokemonResponse = pokemonService.getPokemonBasedOnTypeAndName(name, type, size, offset, generation, sort);
         return new ResponseEntity<>(pokemonResponse, HttpStatus.OK);
     }
 

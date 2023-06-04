@@ -22,4 +22,5 @@ public class Pokemon {
     private List<String> moves;
     private Stats stats;
     private String image;
+    private String generation;
 }
