@@ -36,14 +36,14 @@ public class PokemonFullCustomRepositoryImpl implements PokemonFullCustomReposit
         List<Ability> abilities = getAbilityDetailsByName(pokemon.getAbilities());
         return new PokemonResponseDTO(
                 pokemon.getId(), pokemon.getName(), pokemon.getBaseExperience(), pokemon.getHeight(), pokemon.getWeight(),
-                pokemon.getImage(), pokemon.getStats(), types, abilities
+                pokemon.getImage(), pokemon.getStats(), types, abilities, pokemon.getGeneration()
         );
     }
 
     @Override
     public List<Moves> getMovesByName(Integer id) {
         Query query = new Query(Criteria.where("_id").is(id));
-        List <String> moves = mongoTemplate.find(query, Pokemon.class).get(0).getMoves();
+        List<String> moves = mongoTemplate.find(query, Pokemon.class).get(0).getMoves();
         Query moveQuery = new Query(Criteria.where("name").in(moves));
         logger.info("Query : " + moveQuery);
         return mongoTemplate.find(moveQuery, Moves.class);

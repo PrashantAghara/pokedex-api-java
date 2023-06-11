@@ -1,6 +1,7 @@
 package api.pokedex.scripts.mappers.pokemon;
 
 import api.pokedex.scripts.mappers.pokemon.ability.Ability;
+import api.pokedex.scripts.mappers.pokemon.ability.AbilityDetail;
 import api.pokedex.scripts.mappers.pokemon.images.Spirites;
 import api.pokedex.scripts.mappers.pokemon.moves.Move;
 import api.pokedex.scripts.mappers.pokemon.stats.Stat;
@@ -22,4 +23,7 @@ public class Pokemon {
     private List<Stat> stats;
     private List<Move> moves;
     private Spirites sprites;
+    private AbilityDetail species;
+    private String evolveFrom;
+    private String generation;
 }
