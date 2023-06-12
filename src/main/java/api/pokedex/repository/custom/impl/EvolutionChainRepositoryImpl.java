@@ -35,28 +35,46 @@ public class EvolutionChainRepositoryImpl implements EvolutionChainRepository {
             return new EvolutionChainResponse(pokemon.getId(), pokemon.getName(), null);
         }
 
-        if (pokemon.getEvolvesFrom() == null && !pokemon.getEvolvesTo().isEmpty()) {
-            List<EvolutionDTO> evolutionDTOS = new ArrayList<>();
-            for (String name : pokemon.getEvolvesTo()) {
-                evolutionDTOS.add(getNextEvolutions(name));
-            }
-            return new EvolutionChainResponse(id, pokemon.getName(), new EvolutionDTO(pokemon.getName(), pokemon.getImage(), evolutionDTOS));
-        }
+        Pokemon currPokemon = pokemon;
 
-        return null
+        while (currPokemon.getEvolvesFrom() != null) {
+            Query prev = new Query(Criteria.where("name").is(currPokemon.getEvolvesFrom()));
+            logger.info("Query : " + prev);
+            currPokemon = mongoTemplate.find(prev, Pokemon.class).get(0);
+        }
+        EvolutionChainResponse evolutionChainResponse = new EvolutionChainResponse();
+        evolutionChainResponse.setId(pokemon.getId());
+        evolutionChainResponse.setName(pokemon.getName());
+        evolutionChainResponse.setEvolutions(new EvolutionDTO(currPokemon.getName(), currPokemon.getImage(), getAllEvolutions(currPokemon)));
+        return evolutionChainResponse;
     }
 
-    private EvolutionDTO getNextEvolutions(String name) {
-        Query query = new Query(Criteria.where("name").is(name));
-        logger.info("Query : " + query);
-        Pokemon pokemon = mongoTemplate.find(query, Pokemon.class).get(0);
-        List<EvolutionDTO> evolutionDTOS = new ArrayList<>();
-        for (String pokemonName : pokemon.getEvolvesTo()) {
-            Query nextQuery = new Query(Criteria.where("name").is(pokemonName));
-            logger.info("Query : " + query);
-            Pokemon nextPokemon = mongoTemplate.find(nextQuery, Pokemon.class).get(0);
-            evolutionDTOS.add(new EvolutionDTO(nextPokemon.getName(), nextPokemon.getImage(), new ArrayList<>()));
+    private List<EvolutionDTO> getAllEvolutions(Pokemon currPokemon) {
+        List<String> nextPokemons = currPokemon.getEvolvesTo();
+        List<EvolutionDTO> firstEvolutionDTOs = new ArrayList<>();
+
+        for (String pokemonName : nextPokemons) {
+            Query getNextEvolution = new Query(Criteria.where("name").is(pokemonName));
+            logger.info("Query : " + getNextEvolution);
+            Pokemon pokemon = mongoTemplate.find(getNextEvolution, Pokemon.class).get(0);
+            List<EvolutionDTO> secondEvolutionDTOs = new ArrayList<>();
+            if (!pokemon.getEvolvesTo().isEmpty()) {
+                List<String> finalPokemons = pokemon.getEvolvesTo();
+                for (String finalName : finalPokemons) {
+                    Query getFinalEvolution = new Query(Criteria.where("name").is(finalName));
+                    logger.info("Query : " + getFinalEvolution);
+                    Pokemon finalPokemon = mongoTemplate.find(getFinalEvolution, Pokemon.class).get(0);
+                    EvolutionDTO evolutionDTO = new EvolutionDTO(finalPokemon.getName(), finalPokemon.getImage(), new ArrayList<>());
+                    secondEvolutionDTOs.add(evolutionDTO);
+                }
+            }
+            EvolutionDTO secondForm = new EvolutionDTO();
+            secondForm.setName(pokemon.getName());
+            secondForm.setImage(pokemon.getImage());
+            secondForm.setNextEvolution(secondEvolutionDTOs);
+            firstEvolutionDTOs.add(secondForm);
         }
-        return new EvolutionDTO(name, pokemon.getImage(), evolutionDTOS);
+
+        return firstEvolutionDTOs;
     }
 }
