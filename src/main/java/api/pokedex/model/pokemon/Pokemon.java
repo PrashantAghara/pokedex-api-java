@@ -23,4 +23,6 @@ public class Pokemon {
     private Stats stats;
     private String image;
     private String generation;
+    private String evolvesFrom;
+    private List<String> evolvesTo;
 }

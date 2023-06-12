@@ -4,6 +4,7 @@ import api.pokedex.scripts.mappers.CountMapper;
 import api.pokedex.scripts.mappers.Results;
 import api.pokedex.scripts.mappers.ability.AbilityDetails;
 import api.pokedex.scripts.mappers.moves.Moves;
+import api.pokedex.scripts.mappers.pokemon.EvolveFrom;
 import api.pokedex.scripts.mappers.pokemon.Pokemon;
 import api.pokedex.scripts.mappers.pokemon.ability.Ability;
 import api.pokedex.scripts.mappers.pokemon.ability.AbilityDetail;
@@ -37,8 +38,23 @@ public class AddPokemons {
         CountMapper countMapper = Objects.requireNonNull(getPokemon.get().uri("https://pokeapi.co/api/v2/pokemon?limit=5000").retrieve().bodyToMono(CountMapper.class).block());
         for (Results result : countMapper.getResults()) {
             Pokemon pokemon = getPokemon.get().uri(result.getUrl()).retrieve().bodyToMono(Pokemon.class).block();
-            //DB
+
             assert pokemon != null;
+            EvolveFrom evolveFrom = getPokemon.get().uri(pokemon.getSpecies().getUrl()).retrieve().bodyToMono(EvolveFrom.class).block();
+            assert evolveFrom != null;
+            if (evolveFrom.getEvolves_from_species() == null) {
+                pokemon.setEvolveFrom(null);
+            } else {
+                pokemon.setEvolveFrom(evolveFrom.getEvolves_from_species().getName());
+            }
+
+            if (evolveFrom.getGeneration() == null) {
+                pokemon.setGeneration(null);
+            } else {
+                pokemon.setGeneration(evolveFrom.getGeneration().getName());
+            }
+
+            //DB
             System.out.println("DB Saved : " + pokemon.getId());
             postDataService.savePokemon(pokemon);
         }
