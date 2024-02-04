@@ -20,4 +20,14 @@ public class PokemonResponse {
     private Long offset;
     private List<PokemonResponseCompact> pokemons;
     private PokemonResponseDTO pokemon;
+
+    public PokemonResponse(PokemonResponseDTO pokemonResponseDTO) {
+        this.pokemon = pokemonResponseDTO;
+    }
+
+    public PokemonResponse(int size, Long offset, List<PokemonResponseCompact> pokemonResponseCompacts) {
+        this.size = size;
+        this.offset = offset;
+        this.pokemons = pokemonResponseCompacts;
+    }
 }

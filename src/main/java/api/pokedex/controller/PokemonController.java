@@ -1,5 +1,6 @@
 package api.pokedex.controller;
 
+import api.pokedex.request.PokemonRequest;
 import api.pokedex.response.PokemonResponse;
 import api.pokedex.service.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,10 @@ public class PokemonController {
     public ResponseEntity<PokemonResponse> getPokemonByID(@PathVariable(name = "id") Integer id) {
         PokemonResponse pokemonResponse = pokemonService.getPokemonByID(id);
         return new ResponseEntity<>(pokemonResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/pokemon")
+    public ResponseEntity<PokemonResponse> getPokemonByID(@RequestBody PokemonRequest pokemonRequest) {
+        return new ResponseEntity<>(pokemonService.getPokemonById(pokemonRequest), HttpStatus.OK);
     }
 }
